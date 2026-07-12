@@ -4,16 +4,29 @@ declare(strict_types=1);
 
 namespace Core;
 
+use Closure;
 use \Exception;
+use Core\Request;
 
 class Route
 {
+    protected Request $request;
 
     private array $routes = [];
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     public function get(string $path, callable|array $callback): void
     {
         $this->routes['GET'][$path] = $callback;
+    }
+
+    public function post(string $path, callable|array $callback): void
+    {
+        $this->routes['POST'][$path] = $callback;
     }
 
     public function resolveRoute(string $method, string $path, array $segments)
@@ -28,7 +41,8 @@ class Route
         // var_dump($callback,$parameters);
 
         if (is_callable($callback)) {
-            return $callback(...array_values($parameters));
+            $resolvedParameters = $this->resolveMethodParameters(null, $callback, $parameters);
+            return $callback(...array_values($resolvedParameters ?? []));
         }
 
         if (is_array($callback)) {
@@ -59,7 +73,10 @@ class Route
             throw new Exception("Method {$action} not found in controller {$controllerClass}");
         }
 
-        return $controller->{$action}(...array_values($parameters ?? []));
+        $resolvedParameters = $this->resolveMethodParameters($controller, $action, $parameters);
+
+
+        return $controller->{$action}(...array_values($resolvedParameters ?? []));
     }
 
     private function handleDynamicRoute(string $method, string $path, array $segments): ?array
@@ -100,5 +117,31 @@ class Route
         }
 
         return null;
+    }
+
+    private function resolveMethodParameters(?object $controller, string|callable $action,?array $parameters = null): array
+    {
+        $functionParameters = [];
+
+        if($controller){
+            $reflection = new \ReflectionMethod($controller, $action);
+        } else {
+            $reflection = new \ReflectionFunction($action);
+        }
+    
+        
+        foreach ($reflection->getParameters() as $param) {
+            $paramName = $param->getName();
+            $paramType = $param->getType();
+
+            if($paramType == 'Core\Request') {
+                $functionParameters[] = $this->request;
+            } elseif (getType($paramType) == 'object') {
+                $functionParameters[] = new $paramType;
+            } else {
+                $functionParameters[] = $parameters[$paramName] ?? null;
+            }
+        }
+        return $functionParameters;
     }
 }
