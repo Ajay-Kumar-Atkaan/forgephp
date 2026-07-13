@@ -3,28 +3,23 @@
 namespace App\controllers;
 use Core\BaseController;
 use Core\Request;
+use Core\Response;
 
 class TestController extends BaseController
 {
-    public function index(Request $request)
-    {
-        echo "Hello from TestController index method! <br>";
-        echo "Request Method: " . $request->method() . "<br>";
-        echo "Request URL: " . $request->url() . "<br>";
-        echo "Request Headers: <pre>" . print_r($request->headers(), true) . "</pre><br>";
-        echo "Request GET: <pre>" . print_r($request->get(), true) . "</pre><br>";
-        echo "Request POST: <pre>" . print_r($request->post(), true) . "</pre><br>";
-        echo "Request Session: <pre>" . print_r($request->getSession(), true) . "</pre><br>";   
-        echo "Request All: <pre>" . print_r($request->all(), true) . "</pre><br>";
-    }
+    
 
     public function getById(Request $request, $id)
     {
-        echo "Hello from TestController getById method! ID: " . $id;
-        echo "<br>Request Method: " . $request->method();
-        echo "<br>Request URL: " . $request->url();
-        echo "<br>Request Headers: <pre>" . print_r($request->headers(), true) . "</pre>";
-        echo "<br>Request GET: <pre>" . print_r($request->get(), true) . "</pre>";
+
+        return Response::json([
+            'message' => 'Hello from TestController getById method!',
+            'id' => $id,
+            'request_method' => $request->method(),
+            'request_url' => $request->url(),
+            'request_headers' => $request->headers(),
+            'request_get' => $request->get()
+        ]);
     }
 
     public function getUserById($id)
