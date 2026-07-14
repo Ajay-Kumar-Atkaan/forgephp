@@ -1,6 +1,6 @@
 {
-    "name": "evan/s_hub",
-    "description": "social media platform with 2010s visuals",
+    "name": "ajay-kumar-atkaan/forgephp",
+    "description": "A lightweight PHP MVC framework for learning and experimentation.",
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -9,7 +9,7 @@
     },
     "authors": [
         {
-            "name": "Evan Stewinksy",
+            "name": "Ajay Kumar Atkaan",
             "email": "evanasuka4@gmail.com"
         }
     ],
