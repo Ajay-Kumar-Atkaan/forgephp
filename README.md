@@ -43,4 +43,3 @@ ForgePHP is a lightweight PHP MVC framework built from scratch for learning, exp
 
 ### v1.0.0
 - [ ] Stable MVC Framework
-- [ ] Power SocialHub entirely on ForgePHP
