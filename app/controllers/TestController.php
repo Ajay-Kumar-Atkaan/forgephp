@@ -10,7 +10,7 @@ class TestController extends BaseController
 {
     
 
-    public function getById(Request $request, $id)
+    public function getById(Request $request,int $id, \Exception $exception)
     {
 
         // return Response::json([
@@ -21,6 +21,7 @@ class TestController extends BaseController
         //     'request_headers' => $request->headers(),
         //     'request_get' => $request->get()
         // ]);
+        print_r($exception);
         return View::htmlView('test',['id' => $id,]);
     }
 

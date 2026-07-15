@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Core;
 
-use Closure;
 use \Exception;
 use Core\Request;
 
@@ -38,7 +37,6 @@ class Route
         if ($callback === null) {
             [$callback, $parameters] = $this->handleDynamicRoute($method, $path, $segments);
         }
-        // var_dump($callback,$parameters);
 
         if (is_callable($callback)) {
             $resolvedParameters = $this->resolveMethodParameters(null, $callback, $parameters);
@@ -100,11 +98,9 @@ class Route
                     continue;
                 } else if (empty($segments[$index])) {
                     $match = false;
-                    // echo "Segment mismatch: expected '$path''\n";
                     break;
                 } else if ($routeSegment !== $segments[$index]) {
                     $match = false;
-                    // echo "Segment mismatch: expected '$path''\n";
                     break;
                 }
             }
@@ -133,15 +129,26 @@ class Route
         foreach ($reflection->getParameters() as $param) {
             $paramName = $param->getName();
             $paramType = $param->getType();
-
-            if($paramType == 'Core\Request') {
+            if($paramType?->getName() == 'Core\Request') {
                 $functionParameters[] = $this->request;
-            } elseif (getType($paramType) == 'object') {
-                $functionParameters[] = new $paramType;
+            } elseif (!$paramType?->isBuiltin() ) {
+                $instance = new \ReflectionClass($paramType?->getName());
+                $functionParameters[] = $instance->newInstance();
             } else {
-                $functionParameters[] = $parameters[$paramName] ?? null;
+                $functionParameters[] = $this->handleParameterType($paramType,$paramName,$parameters);
             }
         }
         return $functionParameters;
+    }
+
+    private function handleParameterType(\ReflectionNamedType $type, string $name,array $parameters)
+    {
+        if($type?->getName() === 'int' && array_key_exists($name,$parameters))
+            return (int) $parameters[$name];
+
+        else if($type?->getName() === 'float' && array_key_exists($name,$parameters))
+            return (float) $parameters[$name];
+
+        return $parameters[$name] ?? null;
     }
 }
