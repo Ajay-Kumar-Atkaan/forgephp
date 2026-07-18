@@ -9,7 +9,7 @@ class View
     {
         extract($data,EXTR_SKIP);
         ob_start();
-        include __DIR__ .'/../views/' . str_replace('.','/',$file) .'.php'; 
+        include basePath() .'/views/' . str_replace('.','/',$file) .'.php'; 
 
         $content = ob_get_clean();
 
