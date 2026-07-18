@@ -7,16 +7,21 @@ use Core\Request;
 
 class Application
 {
+    public function __construct(private string $basePath)
+    {
+
+    }
     public function run()
     {
         $this->loadEnv();
+        $this->setBasePathInEnv();
         $route = $this->bootRoutes();
         $this->handleRequestCycle($route);        
     }
 
     private function loadEnv()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv = Dotenv::createImmutable($this->basePath);
         $dotenv->load();
     }
 
@@ -24,7 +29,7 @@ class Application
     {
         $request = new Request();
         $route = new Route($request);
-        require_once __DIR__ . '/../router/web.php';
+        require_once  $this->basePath . '/router/web.php';
         return $route;
     }
 
@@ -33,6 +38,11 @@ class Application
         $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         $segments = explode('/', $path);
         $route->resolveRoute($_SERVER['REQUEST_METHOD'], $path, $segments,);
+    }
+
+    private function setBasePathInEnv()
+    {
+        $_ENV['BASE_PATH'] = $this->basePath;
     }
 }
 
