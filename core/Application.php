@@ -29,7 +29,7 @@ class Application
     {
         $request = new Request();
         $route = new Route($request);
-        require_once  $this->basePath . '/router/web.php';
+        require_once  $this->basePath . '/routes/web.php';
         return $route;
     }
 

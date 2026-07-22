@@ -2,7 +2,6 @@
 
 namespace App\controllers;
 use Core\BaseController;
-use Helpers;
 use Core\Request;
 use Core\Response;
 use Core\View;
@@ -10,11 +9,13 @@ use Core\View;
 
 class TestController extends BaseController
 {
-    
+    public function index(Request $request)
+    {
+        return Response::redirect('user/1');
+    }
 
     public function getById(Request $request,int $id, \Exception $exception)
     {
-
         // return Response::json([
         //     'message' => 'Hello from TestController getById method!',
         //     'id' => $id,
