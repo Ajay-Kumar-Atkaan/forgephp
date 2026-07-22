@@ -8,6 +8,8 @@ use App\controllers\TestController;
 $route->get('test/{slug}/post', function (Core\Request $request,$slug) {
     echo 'Hello from anonymous function! Slug: ' . $slug;
     echo '<br>' . print_r($request->all(), true);
+
+    print_r(config('database.connections.mysql.host'));
 });
 
 $route->get('test2', [TestController::class, 'index']);

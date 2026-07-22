@@ -131,7 +131,7 @@ class Route
             $paramType = $param->getType();
             if($paramType?->getName() == 'Core\Request') {
                 $functionParameters[] = $this->request;
-            } elseif (!$paramType?->isBuiltin() ) {
+            } elseif (!$paramType?->isBuiltin() && $paramType?->getName() && class_Exists($paramType?->getName(),true)) {
                 $instance = new \ReflectionClass($paramType?->getName());
                 $functionParameters[] = $instance->newInstance();
             } else {
@@ -141,7 +141,7 @@ class Route
         return $functionParameters;
     }
 
-    private function handleParameterType(\ReflectionNamedType $type, string $name,array $parameters)
+    private function handleParameterType(?\ReflectionNamedType $type, string $name,array $parameters)
     {
         if($type?->getName() === 'int' && array_key_exists($name,$parameters))
             return (int) $parameters[$name];
