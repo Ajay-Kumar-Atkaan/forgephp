@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 use Core\Config;
+use Core\View;
 
 function env(string $key,?string $default = null): ?string
 {
@@ -24,6 +25,10 @@ function asset(?string $path)
 
 function config(string $key)
 {
-    $config = Config($key);
-    return $config::get($key);
+    return Config::get($key);
+}
+
+function view(string $path,array $data = [])
+{
+    return View::htmlView($path,$data);
 }
