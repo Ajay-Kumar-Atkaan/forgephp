@@ -4,7 +4,6 @@ namespace App\controllers;
 use Core\BaseController;
 use Core\Request;
 use Core\Response;
-use Core\View;
 
 
 class TestController extends BaseController
@@ -25,7 +24,7 @@ class TestController extends BaseController
         //     'request_get' => $request->get()
         // ]);
         // print_r($exception);
-        return View::htmlView('test',['id' => $id,]);
+        return view('test',['id' => $id,]);
     }
 
     public function getUserById($id)
