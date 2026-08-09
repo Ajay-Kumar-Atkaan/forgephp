@@ -23,12 +23,12 @@ ForgePHP is a lightweight PHP MVC framework built from scratch for learning, exp
 ## Roadmap
 
 ### v0.2.0
-- [ ] View Engine
-- [ ] HTML Rendering
+- [✅] View Engine
+- [✅] HTML Rendering
 
 ### v0.3.0
-- [ ] Database Layer
-- [ ] Query Builder
+- [✅] Database Layer
+- [✅] Query Builder
 
 ### v0.4.0
 - [ ] Basic ORM
