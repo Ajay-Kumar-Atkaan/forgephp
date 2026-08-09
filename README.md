@@ -18,7 +18,7 @@ ForgePHP is a lightweight PHP MVC framework built from scratch for learning, exp
 
 🚧 **Early Development**
 
-**Current Version:** `v0.1.0`
+**Current Version:** `v0.3.0`
 
 ## Roadmap
 
